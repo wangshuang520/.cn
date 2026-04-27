@@ -1,10 +1,14 @@
 {
-    "title": "聊天记录",
-    "date": "2026年4月25日",
-    "nickname": "A涅槃重生小王",
-    "time": "17:11:33",
-    "content": "08-16-38-24各10米\n-14-42-06-28各20米\n-18-32-26-04-36各35米\n-12-34-22各100米",
-    "avatar": "./avatar.jpg",
-    "redirectUrl": "https://521nqx.xyz",
-    "redirectDelay": 1200
+  "pageTitle": "聊天记录",
+  "shareTitle": "A涅槃重生小王的聊天记录",
+  "shareDescription": "A涅槃重生小王: 08-16-38-24各10米\n-14-42-06-28各20米\n-18-32-26-04-36各35米\n-12-34-22各100米",
+  "chatTitle": "A涅槃重生小王的聊天记录",
+  "chatDate": "2026年4月27日",
+  "nickname": "A涅槃重生小王",
+  "avatar": "avatar.jpg",
+  "messageTime": "22:22:27",
+  "messageContent": "08-16-38-24各10米\n-14-42-06-28各20米\n-18-32-26-04-36各35米\n-12-34-22各100米",
+  "statusTime": "22:30",
+  "speed": "536",
+  "battery": "68"
 }
